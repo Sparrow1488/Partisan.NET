@@ -1,6 +1,6 @@
 using System;
-using Microsoft.Extensions.DependencyInjection;
-using PartisanNET.App.Wpf.Services;
+using PartisanNET.App.Wpf.Views;
+using PartisanNET.Core.Wpf.Navigation;
 using Prism.Mvvm;
 
 #region Annotations
@@ -13,12 +13,18 @@ namespace PartisanNET.App.Wpf.ViewModels;
 
 public class MainViewModel : BindableBase
 {
-    private readonly GreetingService _greetingService;
+    private object? _currentView;
 
-    public MainViewModel(IServiceProvider services)
+    public MainViewModel(NavigationService navigation)
     {
-        _greetingService = services.GetRequiredService<GreetingService>();
+        navigation.CurrentViewShell.Subscribe(view => CurrentView = view);
+        
+        navigation.Navigate<GreetingView>();
     }
 
-    public string Text => _greetingService.GetMessage();
+    public object? CurrentView
+    {
+        get => _currentView;
+        set => SetProperty(ref _currentView, value);
+    }
 }

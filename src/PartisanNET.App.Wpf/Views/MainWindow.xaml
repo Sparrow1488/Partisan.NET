@@ -8,9 +8,5 @@
     Width="800"
     Height="450"
     mc:Ignorable="d">
-    <TextBlock
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        FontSize="22"
-        Text="{Binding Text}" />
+    <ContentPresenter Content="{Binding CurrentView, Mode=OneWay}" />
 </Window>

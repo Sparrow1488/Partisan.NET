@@ -1,16 +1,13 @@
-﻿using System;
-using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
-using PartisanNET.App.Wpf.ViewModels;
+﻿using PartisanNET.App.Wpf.ViewModels;
 
 namespace PartisanNET.App.Wpf.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow
 {
-    public MainWindow(IServiceProvider services)
+    public MainWindow(MainViewModel viewModel)
     {
         InitializeComponent();
-        
-        DataContext = services.GetRequiredService<MainViewModel>();
+
+        DataContext = viewModel;
     }
 }
