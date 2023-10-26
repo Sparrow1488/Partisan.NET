@@ -9,11 +9,9 @@ public class WarriorViewModel : BindableBase
 {
     private object? _squadView;
 
-    public WarriorViewModel(NavigationService navigation)
+    public WarriorViewModel(NavigationService<WarriorViewModel> navigation)
     {
-        navigation = navigation.CreateScoped();
         navigation.CurrentViewShell.Subscribe(view => SquadView = view);
-        
         navigation.Navigate<SquadView>();
     }
 

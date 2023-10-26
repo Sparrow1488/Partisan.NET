@@ -12,32 +12,38 @@ public abstract class IocApplication : System.Windows.Application
     {
         var host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder();
         host.ConfigureServices(ConfigureServices);
-
-        host.ConfigureServices(s 
-            => s.AddScoped<NavigationService>(provider =>
+        
+        host.ConfigureServices(s =>
+        {
+            s.AddSingleton<NavigationMaps>(_ =>
             {
-                var builder = ActivatorUtilities.CreateInstance<NavigationServiceBuilder>(provider);
-                ConfigureViews(builder);
+                var maps = new NavigationMaps();
+                ConfigureViews(maps);
 
-                return builder.Build();
-            }));
+                return maps;
+            });
+            
+            var maps = new NavigationMaps();
+            ConfigureViews(maps);
+            
+            s.AddSingleton<NavigationStore>();
+            s.AddScoped(typeof(NavigationService<>));
+        });
         
         Host = host.Build();
         Services = Host.Services;
-        Navigation = Services.GetRequiredService<NavigationService>();
     }
 
     protected IHost Host { get; }
     protected IServiceProvider Services { get; }
-    protected NavigationService Navigation { get; }
     
-    protected abstract void ConfigureViews(NavigationServiceBuilder nav);
+    protected abstract void ConfigureViews(NavigationMaps maps);
     protected abstract void ConfigureServices(IServiceCollection services);
-    protected abstract Window ResolveMainWindow(IServiceProvider services, NavigationService navigation);
+    protected abstract Window ResolveMainWindow(IServiceProvider services);
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        MainWindow = ResolveMainWindow(Services, Navigation);
+        MainWindow = ResolveMainWindow(Services);
         
         base.OnStartup(e);
 

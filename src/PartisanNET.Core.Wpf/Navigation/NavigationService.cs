@@ -7,27 +7,23 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PartisanNET.Core.Wpf.Navigation;
 
-public class NavigationService
+public class NavigationService<TViewModel>
 {
-    private readonly Dictionary<Type, Type> _maps;
+    private readonly NavigationMaps _maps;
     private readonly IServiceProvider _services;
     private readonly ISubject<object> _currentViewShell = new Subject<object>();
 
-    public NavigationService(Dictionary<Type, Type> maps, IServiceProvider services)
+    public NavigationService(NavigationMaps maps, NavigationStore store, IServiceProvider services)
     {
         _maps = maps;
         _services = services;
         _currentViewShell.Subscribe(view => CurrentView = view);
+        
+        store.StoreNavigation(this);
     }
 
     public object? CurrentView { get; set; }
     public IObservable<object?> CurrentViewShell => _currentViewShell.AsObservable();
-
-    public NavigationService CreateScoped()
-    {
-        var scope = _services.CreateScope().ServiceProvider;
-        return ActivatorUtilities.CreateInstance<NavigationService>(scope, _maps);
-    }
     
     public void Navigate<TView>() => NavigateCore<TView>();
     private (object View, object ViewModel) NavigateCore<TView>() => NavigateCore(typeof(TView));
@@ -42,10 +38,12 @@ public class NavigationService
 
     private (object View, object ViewModel) CreateViewPairs(Type viewType)
     {
-        var viewModelType = _maps[viewType];
+        var viewModelType = _maps.Maps[viewType];
 
-        var view = (ContentControl) ActivatorUtilities.CreateInstance(_services, viewType);
-        var viewModel = ActivatorUtilities.CreateInstance(_services, viewModelType);
+        var scope = _services.CreateScope().ServiceProvider;
+
+        var view = (ContentControl) ActivatorUtilities.CreateInstance(scope, viewType);
+        var viewModel = ActivatorUtilities.CreateInstance(scope, viewModelType);
 
         view.DataContext = viewModel;
 

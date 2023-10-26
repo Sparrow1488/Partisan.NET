@@ -22,15 +22,15 @@ public partial class App
         #endregion
     }
 
-    protected override Window ResolveMainWindow(IServiceProvider services, NavigationService navigation)
+    protected override Window ResolveMainWindow(IServiceProvider services)
     {
         return services.GetRequiredService<MainWindow>();
     }
 
-    protected override void ConfigureViews(NavigationServiceBuilder nav)
+    protected override void ConfigureViews(NavigationMaps maps)
     {
-        nav.AddNavigation<GreetingView, GreetingViewModel>();
-        nav.AddNavigation<WarriorView, WarriorViewModel>();
-        nav.AddNavigation<SquadView, SquadViewModel>();
+        maps.AddNavigation<GreetingView, GreetingViewModel>();
+        maps.AddNavigation<WarriorView, WarriorViewModel>();
+        maps.AddNavigation<SquadView, SquadViewModel>();
     }
 }

@@ -15,7 +15,7 @@ public class MainViewModel : BindableBase
 {
     private object? _currentView;
 
-    public MainViewModel(NavigationService navigation)
+    public MainViewModel(NavigationService<MainViewModel> navigation)
     {
         navigation.CurrentViewShell.Subscribe(view => CurrentView = view);
         
