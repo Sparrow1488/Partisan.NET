@@ -24,7 +24,7 @@ var squad = new Squad { Title = "SuperSquad" };
 var warriors = new List<Warrior>
 {
     new() { Name = "Warrior-1" },
-    new() { Name = "Warrior-2" },
+    new() { Name = "Warrior-2" }
 };
 
 squad.AddWarrior(warriors[0]);
