@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PartisanNET.Core.Wpf.Navigation;
 
-public class NavigationService<TViewModel>
+public class NavigationService<TViewModelCtx>
 {
     private readonly NavigationMaps _maps;
     private readonly IServiceProvider _services;
@@ -25,20 +25,20 @@ public class NavigationService<TViewModel>
     public object? CurrentView { get; set; }
     public IObservable<object?> Requests => _requestsShell.AsObservable();
     
-    public void NavigateRequest<TView>() => NavigateCore<TView>(true);
+    public void NavigateRequest<TViewModel>() => NavigateCore<TViewModel>(true);
 
-    public void Navigate<TView>(Action<object> viewCallback)
+    public void Navigate<TViewModel>(Action<object> viewCallback)
     {
-        var (view, _) = NavigateCore<TView>(false);
+        var (view, _) = NavigateCore<TViewModel>(false);
         viewCallback.Invoke(view);
     }
     
-    private (object View, object ViewModel) NavigateCore<TView>(bool notifyShell) 
-        => NavigateCore(typeof(TView), notifyShell);
+    private (object View, object ViewModel) NavigateCore<TViewModel>(bool notifyShell) 
+        => NavigateCore(typeof(TViewModel), notifyShell);
     
-    private (object View, object ViewModel) NavigateCore(Type viewType, bool notifyShell)
+    private (object View, object ViewModel) NavigateCore(Type viewModelType, bool notifyShell)
     {
-        var pairs = CreateViewPairs(viewType);
+        var pairs = CreateViewPairs(viewModelType);
         
         if (notifyShell)
             _requestsShell.OnNext(pairs.View);
@@ -46,9 +46,9 @@ public class NavigationService<TViewModel>
         return pairs;
     }
 
-    private (object View, object ViewModel) CreateViewPairs(Type viewType)
+    private (object View, object ViewModel) CreateViewPairs(Type viewModelType)
     {
-        if (!_maps.Maps.TryGetValue(viewType, out var viewModelType))
+        if (!_maps.Maps.TryGetValue(viewModelType, out var viewType))
         {
             throw new InvalidOperationException($"Данный тип {viewType.Name} не зарегистрирован для навигации");
         }

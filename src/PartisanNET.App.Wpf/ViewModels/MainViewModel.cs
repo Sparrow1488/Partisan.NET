@@ -20,8 +20,8 @@ public class MainViewModel : BindableBase
     {
         navigation.Requests.Subscribe(view => CurrentView = view);
         
-        navigation.Navigate<GreetingView>(view => CurrentView = view);
-        navigation.Navigate<GlobalTopView>(view => TopView = view);
+        navigation.Navigate<GreetingViewModel>(view => CurrentView = view);
+        navigation.Navigate<GlobalTopViewModel>(view => TopView = view);
     }
 
     public object? CurrentView

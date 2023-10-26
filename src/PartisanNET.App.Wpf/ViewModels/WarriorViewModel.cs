@@ -12,7 +12,7 @@ public class WarriorViewModel : BindableBase
     public WarriorViewModel(NavigationService<WarriorViewModel> navigation)
     {
         navigation.Requests.Subscribe(view => SquadView = view);
-        navigation.NavigateRequest<SquadView>();
+        navigation.NavigateRequest<SquadViewModel>();
     }
 
     public object? SquadView

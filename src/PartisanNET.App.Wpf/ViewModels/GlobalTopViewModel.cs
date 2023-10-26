@@ -18,11 +18,11 @@ public class GlobalTopViewModel
 
     public ICommand GoHome => _goHome ??= new DelegateCommand(() =>
     {
-        _mainNavigation.NavigateRequest<GreetingView>();
+        _mainNavigation.NavigateRequest<GreetingViewModel>();
     });
     
     public ICommand GoWarrior => _goWarrior ??= new DelegateCommand(() =>
     {
-        _mainNavigation.NavigateRequest<WarriorView>();
+        _mainNavigation.NavigateRequest<WarriorViewModel>();
     });
 }

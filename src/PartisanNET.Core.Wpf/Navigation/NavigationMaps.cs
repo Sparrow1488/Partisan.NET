@@ -11,6 +11,6 @@ public class NavigationMaps
 
     public void AddNavigation<TView, TViewModel>()
     {
-        _maps.Add(typeof(TView), typeof(TViewModel));
+        _maps.Add(typeof(TViewModel), typeof(TView));
     }
 }

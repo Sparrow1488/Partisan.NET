@@ -24,6 +24,6 @@ public class GreetingViewModel : BindableBase
 
     public ICommand Login => _login ??= new DelegateCommand(() =>
     {
-        _navigationService.NavigateRequest<WarriorView>();
+        _navigationService.NavigateRequest<WarriorViewModel>();
     });
 }
