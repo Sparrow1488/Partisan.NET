@@ -32,5 +32,6 @@ public partial class App
         maps.AddNavigation<GreetingView, GreetingViewModel>();
         maps.AddNavigation<WarriorView, WarriorViewModel>();
         maps.AddNavigation<SquadView, SquadViewModel>();
+        maps.AddNavigation<GlobalTopView, GlobalTopViewModel>();
     }
 }

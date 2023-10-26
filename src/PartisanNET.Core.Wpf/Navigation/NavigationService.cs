@@ -11,34 +11,47 @@ public class NavigationService<TViewModel>
 {
     private readonly NavigationMaps _maps;
     private readonly IServiceProvider _services;
-    private readonly ISubject<object> _currentViewShell = new Subject<object>();
+    private readonly ISubject<object> _requestsShell = new Subject<object>();
 
     public NavigationService(NavigationMaps maps, NavigationStore store, IServiceProvider services)
     {
         _maps = maps;
         _services = services;
-        _currentViewShell.Subscribe(view => CurrentView = view);
+        _requestsShell.Subscribe(view => CurrentView = view);
         
         store.StoreNavigation(this);
     }
 
     public object? CurrentView { get; set; }
-    public IObservable<object?> CurrentViewShell => _currentViewShell.AsObservable();
+    public IObservable<object?> Requests => _requestsShell.AsObservable();
     
-    public void Navigate<TView>() => NavigateCore<TView>();
-    private (object View, object ViewModel) NavigateCore<TView>() => NavigateCore(typeof(TView));
+    public void NavigateRequest<TView>() => NavigateCore<TView>(true);
+
+    public void Navigate<TView>(Action<object> viewCallback)
+    {
+        var (view, _) = NavigateCore<TView>(false);
+        viewCallback.Invoke(view);
+    }
     
-    private (object View, object ViewModel) NavigateCore(Type viewType)
+    private (object View, object ViewModel) NavigateCore<TView>(bool notifyShell) 
+        => NavigateCore(typeof(TView), notifyShell);
+    
+    private (object View, object ViewModel) NavigateCore(Type viewType, bool notifyShell)
     {
         var pairs = CreateViewPairs(viewType);
-        _currentViewShell.OnNext(pairs.View);
+        
+        if (notifyShell)
+            _requestsShell.OnNext(pairs.View);
 
         return pairs;
     }
 
     private (object View, object ViewModel) CreateViewPairs(Type viewType)
     {
-        var viewModelType = _maps.Maps[viewType];
+        if (!_maps.Maps.TryGetValue(viewType, out var viewModelType))
+        {
+            throw new InvalidOperationException($"Данный тип {viewType.Name} не зарегистрирован для навигации");
+        }
 
         var scope = _services.CreateScope().ServiceProvider;
 

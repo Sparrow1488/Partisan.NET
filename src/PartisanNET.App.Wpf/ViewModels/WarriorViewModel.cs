@@ -11,8 +11,8 @@ public class WarriorViewModel : BindableBase
 
     public WarriorViewModel(NavigationService<WarriorViewModel> navigation)
     {
-        navigation.CurrentViewShell.Subscribe(view => SquadView = view);
-        navigation.Navigate<SquadView>();
+        navigation.Requests.Subscribe(view => SquadView = view);
+        navigation.NavigateRequest<SquadView>();
     }
 
     public object? SquadView
