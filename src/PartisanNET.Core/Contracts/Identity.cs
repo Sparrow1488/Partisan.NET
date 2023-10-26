@@ -1,4 +1,4 @@
-namespace PartisanNetwork.Core.Contracts;
+namespace PartisanNET.Core.Contracts;
 
 public class Identity : IIdentity
 {

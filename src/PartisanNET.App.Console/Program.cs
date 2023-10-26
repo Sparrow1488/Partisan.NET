@@ -1,7 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using PartisanNetwork.Core;
-using PartisanNetwork.Core.Static;
+
+using PartisanNET.Core;
+using PartisanNET.Core.Static;
 
 Console.WriteLine("Hello, World!");
 

@@ -1,7 +1,7 @@
-using PartisanNetwork.Core.Contracts;
-using PartisanNetwork.Core.Static;
+using PartisanNET.Core.Contracts;
+using PartisanNET.Core.Static;
 
-namespace PartisanNetwork.Core;
+namespace PartisanNET.Core;
 
 public class Equipment : Identity
 {

@@ -1,4 +1,4 @@
-namespace PartisanNetwork.Core.Static;
+namespace PartisanNET.Core.Static;
 
 public static class TextFormats
 {

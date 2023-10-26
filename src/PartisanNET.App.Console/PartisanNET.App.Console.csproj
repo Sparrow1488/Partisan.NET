@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PartisanNET.Core\PartisanNET.Core.csproj" />
       <ProjectReference Include="..\PartisanNetwork.Core\PartisanNetwork.Core.csproj" />
     </ItemGroup>
 

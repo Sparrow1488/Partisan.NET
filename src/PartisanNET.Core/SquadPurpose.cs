@@ -1,6 +1,6 @@
-using PartisanNetwork.Core.Contracts;
+using PartisanNET.Core.Contracts;
 
-namespace PartisanNetwork.Core;
+namespace PartisanNET.Core;
 
 public class SquadPurpose : Identity
 {
