@@ -1,37 +1,22 @@
-﻿using System;
-using System.Windows;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Windows;
+using PartisanNET.App.Wpf.Constants;
 using PartisanNET.App.Wpf.Services;
-using PartisanNET.App.Wpf.ViewModels;
 using PartisanNET.App.Wpf.Views;
-using PartisanNET.Core.Wpf.Navigation;
+using Prism.Ioc;
 
 namespace PartisanNET.App.Wpf;
 
 public partial class App
 {
-    protected override void ConfigureServices(IServiceCollection services)
+    protected override Window CreateShell()
     {
-        services.AddSingleton<GreetingService>();
-
-        #region Костыль с регистрацией View
-
-        services.AddSingleton<MainWindow>();
-        services.AddSingleton<MainViewModel>();
-
-        #endregion
+        return Container.Resolve<ShellWindow>();
     }
 
-    protected override Window ResolveMainWindow(IServiceProvider services)
+    protected override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        return services.GetRequiredService<MainWindow>();
-    }
-
-    protected override void ConfigureViews(NavigationMaps maps)
-    {
-        maps.AddNavigation<GreetingView, GreetingViewModel>();
-        maps.AddNavigation<WarriorView, WarriorViewModel>();
-        maps.AddNavigation<SquadView, SquadViewModel>();
-        maps.AddNavigation<GlobalTopView, GlobalTopViewModel>();
+        containerRegistry.RegisterSingleton<GreetingService>();
+     
+        containerRegistry.RegisterForNavigation<GreetingView>(Regions.GreetingRegion);
     }
 }

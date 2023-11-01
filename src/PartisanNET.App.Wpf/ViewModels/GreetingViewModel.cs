@@ -1,6 +1,5 @@
 using System.Windows.Input;
-using PartisanNET.App.Wpf.Views;
-using PartisanNET.Core.Wpf.Navigation;
+using PartisanNET.App.Wpf.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -14,16 +13,23 @@ namespace PartisanNET.App.Wpf.ViewModels;
 
 public class GreetingViewModel : BindableBase
 {
-    private readonly NavigationService<MainViewModel> _navigationService;
+    private readonly GreetingService _greetingService;
     private ICommand? _login;
+    private string? _greetingMessage;
 
-    public GreetingViewModel(NavigationStore store)
+    public GreetingViewModel(GreetingService greetingService)
     {
-        _navigationService = store.GetRequiredNavigation<MainViewModel>();
+        _greetingService = greetingService;
+    }
+
+    public string? GreetingMessage
+    {
+        get => _greetingMessage;
+        set => SetProperty(ref _greetingMessage, value);
     }
 
     public ICommand Login => _login ??= new DelegateCommand(() =>
     {
-        _navigationService.NavigateRequest<WarriorViewModel>();
+        GreetingMessage = _greetingService.GetMessage();
     });
 }
