@@ -24,6 +24,6 @@ public class ShellWindowViewModel : BindableBase
     public ICommand Navigate => new DelegateCommand(() =>
     {
         var navigation = _regionManager.Regions[Regions.MainRegion].NavigationService;
-        navigation.RequestNavigate(Regions.GreetingRegion);
+        navigation.RequestNavigate(Regions.WarriorRegion);
     });
 }

@@ -1,0 +1,122 @@
+<UserControl
+    x:Class="PartisanNET.App.Wpf.Views.WarriorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="500"
+    d:DesignWidth="950"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Thickness x:Key="ChapterBlockMargin">0 15 0 10</Thickness>
+    </UserControl.Resources>
+
+    <StackPanel
+        MinWidth="500"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Top">
+
+        <!--  Header  -->
+
+        <Grid Margin="{StaticResource ChapterBlockMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <!--  Header  -->
+
+            <Border
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                Width="100"
+                Height="100"
+                Margin="0,0,20,0"
+                BorderBrush="ForestGreen"
+                BorderThickness="2"
+                CornerRadius="1">
+                <Border.Background>
+                    <ImageBrush ImageSource="C:\Users\ilyao\Downloads\eSxt_Z8_QzM.jpg" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                FontSize="{StaticResource PartisanNet.Size.Title2}"
+                Text="Валентин Гиперборей" />
+
+            <WrapPanel
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,10"
+                Orientation="Horizontal">
+
+                <TextBlock
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Center"
+                    FontSize="{StaticResource PartisanNet.Size.Default}"
+                    Text="Отряды: " />
+
+                <!--  Тестовое перечисление  -->
+                <Button
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Content="Группа 'ВЯТКА'"
+                    FontSize="{StaticResource PartisanNet.Size.Small}"
+                    FontWeight="DemiBold" />
+
+                <Button
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Content="Группа 'СЕВЕР'"
+                    FontSize="{StaticResource PartisanNet.Size.Small}"
+                    FontWeight="DemiBold" />
+            </WrapPanel>
+        </Grid>
+
+        <!--  Content  -->
+
+        <Grid Margin="{StaticResource ChapterBlockMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="0,0,0,10"
+                FontSize="{StaticResource PartisanNet.Size.Title1}"
+                Text="Раздел бойца" />
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="0,0,5,0"
+                Content="Снаряжение"
+                FontSize="{StaticResource PartisanNet.Size.Default}" />
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="5,0,0,0"
+                Content="Цели"
+                FontSize="{StaticResource PartisanNet.Size.Default}" />
+        </Grid>
+    </StackPanel>
+</UserControl>
