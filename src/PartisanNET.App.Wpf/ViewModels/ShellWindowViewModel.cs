@@ -1,7 +1,6 @@
 using System.Windows.Input;
 using PartisanNET.App.Wpf.Constants;
 using PartisanNET.Modules.Dialogs.Contracts;
-using PartisanNET.Modules.Dialogs.Services;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Mvvm;

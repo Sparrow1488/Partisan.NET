@@ -11,6 +11,7 @@
       <ProjectReference Include="..\PartisanNET.Core.Wpf\PartisanNET.Core.Wpf.csproj" />
       <ProjectReference Include="..\PartisanNET.Core\PartisanNET.Core.csproj" />
       <ProjectReference Include="..\PartisanNET.Modules.Dialogs\PartisanNET.Modules.Dialogs.csproj" />
+      <ProjectReference Include="..\PartisanNET.Modules.Identity\PartisanNET.Modules.Identity.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -19,6 +20,10 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services" />
     </ItemGroup>
 
 </Project>

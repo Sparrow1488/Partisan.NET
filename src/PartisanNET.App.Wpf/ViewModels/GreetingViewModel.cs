@@ -1,9 +1,12 @@
+using System;
 using System.Windows.Input;
-using MahApps.Metro.Controls.Dialogs;
-using PartisanNET.App.Wpf.Services;
-using PartisanNET.Modules.Dialogs.Services;
+using PartisanNET.App.Wpf.Constants;
+using PartisanNET.Modules.Dialogs.Contracts;
+using PartisanNET.Modules.Identity.Contracts;
+using PartisanNET.Modules.Identity.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using Prism.Regions;
 
 #region Annotations
 
@@ -13,39 +16,37 @@ using Prism.Mvvm;
 
 namespace PartisanNET.App.Wpf.ViewModels;
 
-public class GreetingViewModel : BindableBase
+public class GreetingViewModel : BindableBase, IDisposable
 {
-    private readonly GreetingService _greetingService;
-    private readonly IDialogCoordinator _coordinator;
-    private readonly ShellWindowResolver _windowResolver;
+    private readonly IDialogServiceAdapter _dialogService;
     private ICommand? _login;
-    private string? _greetingMessage;
+    private readonly IDisposable _idSubscription;
 
     public GreetingViewModel(
-        GreetingService greetingService, 
-        ShellWindowResolver windowResolver)
+        IDialogServiceAdapter dialogService, 
+        IIdentityService identityService,
+        IRegionManager regionManager)
     {
-        _greetingService = greetingService;
-        _coordinator = DialogCoordinator.Instance;
-        _windowResolver = windowResolver;
-    }
+        _dialogService = dialogService;
 
-    public string? GreetingMessage
-    {
-        get => _greetingMessage;
-        set => SetProperty(ref _greetingMessage, value);
-    }
-
-    public ICommand Login => _login ??= new DelegateCommand(async () =>
-    {
-        var settings = new MetroDialogSettings
+        _idSubscription = identityService.StatusShell.Subscribe(x =>
         {
-            AnimateHide = false,
-            AnimateShow = false
-        };
+            if (x.Status is not IdStatus.SignIn) return;
+            
+            var mainNavigation = regionManager.Regions[Regions.MainRegion].NavigationService;
+            mainNavigation.RequestNavigate(Regions.WarriorRegion);
+        });
+    }
+
+    public ICommand Login => _login ??= new DelegateCommand(() =>
+    {
+        _dialogService.ShowDialog(Regions.LoginRegion, null);
         
-        var dialogResult = await _coordinator.ShowLoginAsync(_windowResolver.Window!.DataContext, "Login", "Message");
-        
-        // GreetingMessage = _greetingService.GetMessage();
+        // TODO: close login dialog after sign in
     });
+
+    public void Dispose()
+    {
+        _idSubscription.Dispose();
+    }
 }

@@ -1,4 +1,8 @@
 using System;
+using System.Windows;
+using System.Windows.Media;
+using ControlzEx.Theming;
+using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using PartisanNET.Modules.Dialogs.Contracts;
 using PartisanNET.Modules.Dialogs.ViewModels;
@@ -13,6 +17,7 @@ public class DialogServiceAdapter : IDialogServiceAdapter
     private readonly IDialogCoordinator _coordinator;
     private readonly ShellWindowResolver _shellResolver;
     private readonly IContainerProvider _container;
+    private readonly Brush _windowOverlayBrush = new SolidColorBrush(Colors.Black);
 
     public DialogServiceAdapter(
         IDialogCoordinator coordinator, 
@@ -37,10 +42,24 @@ public class DialogServiceAdapter : IDialogServiceAdapter
         view.DataContext = viewModel;
         
         await _coordinator.ShowMetroDialogAsync(
-            _shellResolver.Window.DataContext, 
+            FixWindowOverlayBrushInDarkMode(_shellResolver.Window).DataContext, 
             view
         );
         
         viewModel.NavigateTo(region, parameters, view.RegionManagerScope);
+    }
+    
+    private MetroWindow FixWindowOverlayBrushInDarkMode(Window window)
+    {
+        if (window is not MetroWindow metroWindow)
+            throw new ArgumentException("Passed window type should be 'MetroWindow'");
+
+        var currentTheme = ThemeManager.Current.DetectTheme();
+        if (currentTheme != null && currentTheme.Name.Contains("Dark"))
+        {
+            metroWindow.OverlayBrush = _windowOverlayBrush.Clone();
+        }
+
+        return metroWindow;
     }
 }
