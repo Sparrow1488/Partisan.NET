@@ -7,18 +7,16 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:regions="http://prismlibrary.com/"
-    d:DesignHeight="300"
-    d:DesignWidth="300"
     mc:Ignorable="d">
-    <StackPanel>
-        <StackPanel Margin="0,0,0,10">
+    <StackPanel MinWidth="450">
+        <StackPanel>
             <Button
                 HorizontalAlignment="Right"
                 Command="{Binding CloseCommand}"
                 Content="Close" />
         </StackPanel>
 
-        <StackPanel>
+        <StackPanel Margin="0,10,0,20">
             <ContentControl x:Name="RegionContentControl" regions:RegionManager.RegionName="{x:Static constants:DialogRegions.DialogContainerRegion}" />
         </StackPanel>
     </StackPanel>
