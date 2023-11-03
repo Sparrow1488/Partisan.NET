@@ -10,6 +10,7 @@
     Title="Partisan.NET"
     Width="950"
     Height="500"
+    mah:DialogParticipation.Register="{Binding}"
     regions:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
