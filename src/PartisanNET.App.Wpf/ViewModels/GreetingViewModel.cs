@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using PartisanNET.App.Wpf.Services;
+using PartisanNET.Modules.Dialogs.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 

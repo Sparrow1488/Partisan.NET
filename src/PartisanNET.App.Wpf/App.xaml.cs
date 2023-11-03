@@ -1,12 +1,11 @@
 ﻿using System.Windows;
-using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Extensions.DependencyInjection;
 using PartisanNET.App.Wpf.Constants;
 using PartisanNET.App.Wpf.Services;
+using PartisanNET.App.Wpf.ViewModels;
 using PartisanNET.App.Wpf.Views;
+using PartisanNET.Modules.Dialogs;
 using Prism.Ioc;
-using Prism.Microsoft.DependencyInjection;
-using Prism.Services.Dialogs;
+using Prism.Modularity;
 
 namespace PartisanNET.App.Wpf;
 
@@ -14,27 +13,21 @@ public partial class App
 {
     protected override Window CreateShell() => Container.Resolve<ShellWindow>();
 
-    protected override IContainerExtension CreateContainerExtension()
+    protected override void RegisterTypes(IContainerRegistry registry)
     {
-        var services = new ServiceCollection();
+        registry.RegisterSingleton<GreetingService>();
+
+        registry.RegisterForNavigation<ShellWindow, ShellWindowViewModel>();
+        registry.RegisterForNavigation<GreetingView>(Regions.GreetingRegion);
+        registry.RegisterForNavigation<WarriorView>(Regions.WarriorRegion);
         
-        ConfigureServices(services);
-        PrismContainerExtension.Init(services);
-
-        return base.CreateContainerExtension();
+        // registry.RegisterSingleton<IDialogServiceAdapter, DialogServiceAdapter>();
+        // registry.RegisterSingleton<IDialogCoordinator, DialogCoordinator>();
+        // registry.RegisterSingleton<ShellWindowResolver>(() => new ShellWindowResolver(Application.Current.MainWindow));
     }
 
-    private void ConfigureServices(IServiceCollection services)
+    protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
     {
-        services.AddSingleton<GreetingService>();
-        services.AddSingleton<IDialogService, DialogService>();
-        services.AddSingleton<IDialogCoordinator>(_ => DialogCoordinator.Instance);
-        services.AddSingleton<ShellWindowResolver>();
-    }
-
-    protected override void RegisterTypes(IContainerRegistry container)
-    {
-        container.RegisterForNavigation<GreetingView>(Regions.GreetingRegion);
-        container.RegisterForNavigation<WarriorView>(Regions.WarriorRegion);
+        moduleCatalog.AddModule<DialogsModule>();
     }
 }
